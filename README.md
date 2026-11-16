@@ -32,7 +32,7 @@ cd ~/code/zen/zen-theme
 ./zen-theme install-tweaks         # install/refresh Zen Theme Tweaks (safe while Zen runs)
 ```
 
-`apply` backs up what it replaces to `~/hold/zen-theme-backup-<time>/`. `--profile <dir>` picks another profile; the default is the one Zen starts with.
+`capture` makes the repo match the profile, so apply the repo's updates first (`apply --mods-only`) or capture will revert them; it lists every mod version it changes. `apply` backs up what it replaces to `~/hold/zen-theme-backup-<time>/`. `--profile <dir>` picks another profile; the default is the one Zen starts with.
 
 **New machine:** install Zen, install Sine (github.com/CosmoCreeper/Sine), start Zen once and close it, then clone this repo and run `./zen-theme apply`.
 
