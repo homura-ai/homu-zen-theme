@@ -245,6 +245,8 @@ user_pref("var-nebula-website-tint-light", "rgba(255,255,255,0)");
 user_pref("var-nebula-workspace-grayscale", "100%");
 user_pref("widget.windows.pip-decorations.enabled", true);
 user_pref("zen.theme.folder-tree-connectors.interactive", false);
+user_pref("zen.view.compact.enable-at-startup", true);
+user_pref("zen.view.window.scheme", 0);
 user_pref("zen.workspaces.indicator-position", "");
 user_pref("zen.workspaces.separate-essentials", false);
 user_pref("zen.workspaces.show-workspace-indicator", true);
