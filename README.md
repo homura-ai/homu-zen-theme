@@ -8,7 +8,7 @@ Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next la
 |---|---|
 | `mods.json` | Sine's mod list: every installed mod, its source, version and whether it's on. |
 | `mods/<id>/` | A copy of each installed Sine mod, so a profile can be rebuilt even if an upstream repo disappears. |
-| `tweaks/` | **Homu Zen Theme Tweaks**, this repo's own Sine mod: opt-in fixes for clashes between the mods above. Every option is off by default. |
+| `tweaks/` | **Homu Zen Theme Tweaks**, this repo's own Sine mod: fixes for clashes between the mods above. Each can be turned off in its settings. |
 | `prefs/theme-prefs.js` | Theme and mod settings (Neo Zen, Arc, mod options, toolbar layout, Sine settings). Nothing personal: no history, accounts, workspaces or ids. |
 | `profile/chrome/` | LEPTON's `userChrome.css` / `userContent.css` and assets. |
 | `profile/user.js` | LEPTON's user.js (theme switches plus privacy defaults). |
@@ -42,4 +42,4 @@ cd ~/code/zen/homu-zen-theme
 
 Settings → Sine → Homu Zen Theme Tweaks.
 
-- **Disable startup background wipe** (`homu-zen-theme.startup-wipe.disabled`, off by default). At startup Zen fades from a plain background to the workspace gradient. Neo Zen's Color Fixer forces a 2 s transition on that layer, so it plays as a red diagonal gradient with a purple column sweeping in from the left, and the UI appears about 2 s late. With this option on, Zen's own instant transition is restored only while Zen is still starting up (`zen-before-loaded`). Workspace switches afterwards keep Neo Zen's smooth transition, and the rest of the Color Fixer keeps working. Checked on 2026-11-16 by recording startups of a copy of the profile with the option off and on.
+- **Show startup background wipe** (`homu-zen-theme.startup-wipe.enabled`, unticked by default, so the fix is on). At startup Zen fades from a plain background to the workspace gradient. Neo Zen's Color Fixer forces a 2 s transition on that layer, so it plays as a red diagonal gradient with a purple column sweeping in from the left, and the UI appears about 2 s late. Unless this box is ticked, Zen's own instant transition is restored only while Zen is still starting up (`zen-before-loaded`). Workspace switches afterwards keep Neo Zen's smooth transition, and the rest of the Color Fixer keeps working. Checked on 2026-11-16 by recording startups of a copy of the profile in both states.

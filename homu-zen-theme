@@ -23,7 +23,7 @@ ZEN_ROOTS = [Path.home() / ".var/app/app.zen_browser.zen/.zen", Path.home() / ".
 # which Sine's own installer manages).
 CHROME_FILES = ["userChrome.css", "userContent.css", "LEPTON", "CREDITS", "LICENSE", "icons"]
 SKIP_NAMES = {".git", "node_modules", "__pycache__", ".DS_Store"}
-# The repo's own mod (opt-in fixes). Its source is tweaks/, not mods/.
+# The repo's own mod (fixes for clashes between mods). Its source is tweaks/, not mods/.
 TWEAKS_ID = "homu-zen-theme"
 # Earlier ids of the tweaks mod. install-tweaks removes them from a profile so the
 # renamed mod doesn't load twice, keeping their enabled flag.

@@ -1,10 +1,10 @@
 {
   "id": "homu-zen-theme",
   "name": "Homu Zen Theme Tweaks",
-  "description": "Homura's opt-in fixes for clashes between the mods in this theme. Every option is off by default.",
+  "description": "Homura's fixes for clashes between the mods in this theme. Each one can be turned off in the settings.",
   "homepage": "https://github.com/homura-ai/homu-zen-theme",
   "author": "homura-ai",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "createdAt": "2026-11-16",
   "updatedAt": "2026-11-16",
   "style": {
@@ -12,6 +12,11 @@
     "content": ""
   },
   "preferences": "preferences.json",
-  "tags": ["chrome", "fixes"],
-  "fork": ["zen"]
+  "tags": [
+    "chrome",
+    "fixes"
+  ],
+  "fork": [
+    "zen"
+  ]
 }
