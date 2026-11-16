@@ -71,8 +71,27 @@ def default_profile():
 PRIVATE_MODS = REPO / "mods-private"
 
 
+LICENSE_NAME = re.compile(r"(?i)(un)?(licen[cs]e|copying)([-_.][\w.-]*)?$")
+
+
+def license_files(d: Path) -> list:
+    """Non-empty license files at the top of a mod folder."""
+    if not d.is_dir():
+        return []
+    return [f for f in d.iterdir() if LICENSE_NAME.match(f.name) and f.is_file() and f.stat().st_size > 0]
+
+
 def has_license(d: Path) -> bool:
-    return any(re.match(r"(?i)(licen[cs]e|copying)", f.name) for f in d.iterdir())
+    return bool(license_files(d))
+
+
+def copy_mod(src: Path, dst: Path):
+    """copy_tree, but keep license files the repo added to dst that src lacks: Sine installs
+    some MIT mods without their license file, and a capture or update must not drop it."""
+    keep = {f.name: f.read_bytes() for f in license_files(dst) if not (src / f.name).exists()}
+    copy_tree(src, dst)
+    for name, data in keep.items():
+        (dst / name).write_bytes(data)
 
 
 def mod_dir(mid: str) -> Path:
@@ -256,7 +275,7 @@ def cmd_capture(args):
                     continue
                 dest = PRIVATE_MODS / mid
                 print(f"{mid}: no license file, kept in mods-private/ (commit it in that submodule)")
-            copy_tree(sm / mid, dest)
+            copy_mod(sm / mid, dest)
         else:
             print(f"warning: {mid} is in mods.json but has no folder")
     for d in [*(REPO / "mods").iterdir(), *(PRIVATE_MODS.iterdir() if PRIVATE_MODS.is_dir() else [])]:
@@ -398,7 +417,7 @@ def cmd_update(args):
             if layout(vend) != layout(up):
                 report.append((mid, "layout changed: use Sine", note))
                 continue
-            copy_tree(up, vend)
+            copy_mod(up, vend)
             fresh = theme_json(vend)
             for key in ("version", "name", "description"):
                 if key in fresh:
@@ -451,11 +470,19 @@ def cmd_apply(args):
     if (REPO / "profile/user.js").exists():
         shutil.copy2(REPO / "profile/user.js", prof / "user.js")
     mods = json.loads((REPO / "mods.json").read_text())
+    live_file = sm / "mods.json"
+    live = json.loads(live_file.read_text()) if live_file.exists() else {}
     sm.mkdir(parents=True, exist_ok=True)
-    for mid in mods:
+    for mid in list(mods):
         if mid != TWEAKS_ID:
             if not mod_dir(mid).is_dir():
-                print(f"warning: no copy of {mid} here (run: git submodule update --init); Sine can reinstall it from its homepage")
+                # Leave an installed copy and its entry as they are; never list a mod with no folder.
+                if mid in live and (sm / mid).is_dir():
+                    mods[mid] = live[mid]
+                    print(f"warning: no copy of {mid} here (run: git submodule update --init); kept the installed one")
+                else:
+                    del mods[mid]
+                    print(f"warning: no copy of {mid} here (run: git submodule update --init); install it in Sine from its homepage")
                 continue
             copy_tree(mod_dir(mid), sm / mid)
     (sm / "mods.json").write_text(json.dumps(mods, indent=2, ensure_ascii=False))
