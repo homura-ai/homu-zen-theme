@@ -33,7 +33,7 @@
     "enabled": true
   },
   "e122b5d9-d385-4bf8-9971-e137809097d0": {
-    "updatedAt": "2026-08-13T14:28:25Z",
+    "updatedAt": "2026-10-16T09:28:32Z",
     "id": "e122b5d9-d385-4bf8-9971-e137809097d0",
     "homepage": "https://github.com/Ivaon/zen-theme/tree/main/NoTopSites",
     "name": "No Top Sites",
@@ -113,7 +113,8 @@
     "stars": 423,
     "commit": "692800fc50dba4f935944ccb047df0bac47a8b78",
     "no-updates": false,
-    "enabled": true
+    "enabled": true,
+    "updatedAt": "2026-11-16T20:21:11Z"
   },
   "Nebula": {
     "id": "Nebula",
@@ -286,8 +287,8 @@
     "name": "Reopen Closed Tabs Menu",
     "description": "A popup menu to view and restore recently closed tabs. Includes a toolbar button and keyboard shortcut.",
     "author": "Bibek Bhusal",
-    "version": "1.1.7",
-    "updatedAt": "2026-09-07",
+    "version": "1.1.9",
+    "updatedAt": "2026-11-01",
     "tags": [
       "tabs",
       "history",
@@ -313,8 +314,8 @@
     },
     "readme": "https://raw.githubusercontent.com/Vertex-Mods/Reopen-Closed-Tabs-Menu/main/readme.md",
     "createdAt": "2025-09-22",
-    "stars": 16,
-    "commit": "855279aeab8f004e057bdfcc692dbac5a0c39846",
+    "stars": 17,
+    "commit": "862ce62388b4563224302f6ae5c8194cfe41e03b",
     "origin": "store",
     "no-updates": false,
     "enabled": true
@@ -570,8 +571,8 @@
     "name": "Search Keyboard shortcuts",
     "description": "Lightweight script to add search and filter options in keyboard shortcuts in settings",
     "author": "Bibek Bhusal",
-    "version": "1.1.5",
-    "updatedAt": "2026-09-07",
+    "version": "1.1.6",
+    "updatedAt": "2026-10-09",
     "tags": [
       "Search",
       "sine",
@@ -597,8 +598,8 @@
     "readme": "https://raw.githubusercontent.com/Vertex-Mods/Search-Keyboard-Shortcuts/main/README.md",
     "image": "https://raw.githubusercontent.com/Vertex-Mods/Search-Keyboard-Shortcuts/main/image.png",
     "createdAt": "2025-06-23",
-    "stars": 3,
-    "commit": "29d11246f2b07f15cde132c4286283184947f572",
+    "stars": 4,
+    "commit": "07ecd0a4de9f2599fbeda03426abb2b0cdbb47d3",
     "origin": "store",
     "preferences": "",
     "no-updates": false,
@@ -833,7 +834,7 @@
     "name": "Zenslop",
     "description": "Adds a live video preview of a currently playing video above the existing media controls in Zen Browser",
     "author": "Rishu Sharma",
-    "version": "1.1.1",
+    "version": "2.0.0",
     "scripts": {
       "main.uc.js": {
         "name": "Zenslop",
@@ -862,16 +863,18 @@
     },
     "preferences": "preferences.json",
     "no-updates": false,
-    "enabled": true
+    "enabled": true,
+    "updatedAt": "2026-11-16T20:21:11Z"
   },
   "more-essentials": {
     "id": "more-essentials",
     "name": "More Essentials",
     "description": "Set Zen's Essentials cap to infinite or a custom number.",
     "homepage": "https://github.com/homura-ai/more-essentials",
-    "version": "1.0.1",
+    "readme": "https://raw.githubusercontent.com/homura-ai/more-essentials/main/README.md",
+    "version": "1.0.2",
     "createdAt": "2026-09-21",
-    "updatedAt": "2026-09-22T03:01:27Z",
+    "updatedAt": "2026-11-16T20:03:00Z",
     "style": {
       "chrome": "chrome.css",
       "content": ""
@@ -895,9 +898,12 @@
     "id": "modify-url-bar-icons",
     "name": "Modify URL Bar Icons",
     "description": "Move URL bar icons (bookmark star, reader view, site identity, extensions, copy URL and more) into any toolbar with Customize Toolbar drag and drop.",
-    "version": "1.0.0",
+    "homepage": "https://github.com/homura-ai/modify-url-bar-icons",
+    "readme": "https://github.com/homura-ai/modify-url-bar-icons/raw/refs/heads/main/README.md",
+    "image": "https://github.com/homura-ai/modify-url-bar-icons/raw/refs/heads/main/preview.svg",
+    "version": "1.0.1",
     "createdAt": "2026-09-21",
-    "updatedAt": "2026-09-21",
+    "updatedAt": "2026-11-16",
     "style": {
       "chrome": "chrome.css",
       "content": ""
@@ -919,7 +925,6 @@
     "fork": [
       "zen"
     ],
-    "homepage": "https://github.com/homura-ai/modify-url-bar-icons",
     "no-updates": false,
     "enabled": true
   },
@@ -928,9 +933,11 @@
     "name": "Sine Mod Search",
     "description": "Search installed mods by name, description, settings labels, options, and preference keys.",
     "homepage": "https://github.com/homura-ai/sine-mod-search",
-    "version": "1.0.0",
+    "readme": "https://raw.githubusercontent.com/homura-ai/sine-mod-search/main/README.md",
+    "image": "https://raw.githubusercontent.com/homura-ai/sine-mod-search/main/screenshot.png",
+    "version": "1.1.1",
     "createdAt": "2026-09-21",
-    "updatedAt": "2026-09-21",
+    "updatedAt": "2026-11-16T20:10:00Z",
     "style": {
       "chrome": "chrome.css",
       "content": ""
@@ -956,9 +963,9 @@
     "name": "Tab State Highlighter",
     "description": "Apply separate loaded and unloaded effects to Essentials and regular tabs, with optional unloaded-tab fading.",
     "homepage": "https://github.com/homura-ai/tab-state-highlighter",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "createdAt": "2026-09-21",
-    "updatedAt": "2026-09-22T03:48:00Z",
+    "updatedAt": "2026-11-16T20:06:00Z",
     "style": {
       "chrome": "chrome.css",
       "content": ""
@@ -972,6 +979,7 @@
     "fork": [
       "zen"
     ],
+    "readme": "https://raw.githubusercontent.com/homura-ai/tab-state-highlighter/main/README.md",
     "no-updates": false,
     "enabled": true
   },

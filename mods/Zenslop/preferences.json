@@ -1,9 +1,19 @@
 [
   {
-    "property": "mod.zenslop.quality",
-    "label": "Video Quality",
+    "property": "mod.zenslop.renderer",
+    "label": "Video Renderer",
     "type": "dropdown",
-    "defaultValue": "480",
+    "defaultValue": "auto",
+    "options": [
+      { "label": "Native PiP (automatic fallback)", "value": "auto" },
+      { "label": "Canvas (low frame rate)", "value": "canvas" }
+    ]
+  },
+  {
+    "property": "mod.zenslop.quality",
+    "label": "Canvas Video Quality",
+    "type": "dropdown",
+    "defaultValue": "360",
     "options": [
       {
         "label": "Compact (240p)",
@@ -22,5 +32,47 @@
         "value": "640"
       }
     ]
+  },
+  {
+    "property": "mod.zenslop.framerate",
+    "label": "Canvas Frame Rate",
+    "type": "dropdown",
+    "defaultValue": "15",
+    "options": [
+      {
+        "label": "Energy Saver (15 fps)",
+        "value": "15"
+      },
+      {
+        "label": "Smooth (30 fps)",
+        "value": "30"
+      }
+    ]
+  },
+  {
+    "property": "mod.zenslop.captions",
+    "label": "Captions",
+    "type": "dropdown",
+    "defaultValue": "youtube",
+    "options": [
+      {
+        "label": "Off",
+        "value": "off"
+      },
+      {
+        "label": "Always On",
+        "value": "on"
+      },
+      {
+        "label": "Follow YouTube",
+        "value": "youtube"
+      }
+    ]
+  },
+  {
+    "property": "mod.zenslop.captionsWhenPipHidden",
+    "label": "Show Captions When PiP Is Hidden",
+    "type": "checkbox",
+    "defaultValue": false
   }
 ]
