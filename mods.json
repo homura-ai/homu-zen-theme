@@ -983,11 +983,11 @@
     "no-updates": false,
     "enabled": true
   },
-  "zen-theme": {
-    "id": "zen-theme",
-    "name": "Zen Theme Tweaks",
+  "homu-zen-theme": {
+    "id": "homu-zen-theme",
+    "name": "Homu Zen Theme Tweaks",
     "description": "Homura's opt-in fixes for clashes between the mods in this theme. Every option is off by default.",
-    "homepage": "https://github.com/homura-ai/zen-theme",
+    "homepage": "https://github.com/homura-ai/homu-zen-theme",
     "author": "homura-ai",
     "version": "1.0.0",
     "createdAt": "2026-11-16",

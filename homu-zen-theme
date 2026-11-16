@@ -1,5 +1,5 @@
 #!/usr/bin/env -S python3 -I
-"""zen-theme: Homura's Zen Browser theme as code.
+"""homu-zen-theme: Homura's Zen Browser theme as code.
 
   capture   copy the theme from a Zen profile into this repo
   update    check every mod's upstream source; with --write, pull newer copies into this repo
@@ -24,7 +24,10 @@ ZEN_ROOTS = [Path.home() / ".var/app/app.zen_browser.zen/.zen", Path.home() / ".
 CHROME_FILES = ["userChrome.css", "userContent.css", "LEPTON", "CREDITS", "LICENSE", "icons"]
 SKIP_NAMES = {".git", "node_modules", "__pycache__", ".DS_Store"}
 # The repo's own mod (opt-in fixes). Its source is tweaks/, not mods/.
-TWEAKS_ID = "zen-theme"
+TWEAKS_ID = "homu-zen-theme"
+# Earlier ids of the tweaks mod. install-tweaks removes them from a profile so the
+# renamed mod doesn't load twice, keeping their enabled flag.
+OLD_TWEAKS_IDS = ("zen-theme",)
 # Mod sources that moved; Sine checks the homepage for updates.
 MOVED_OWNERS = {"01-1": "homura-ai"}
 # Mods installed from a homura-ai fork that carries fixes upstream doesn't have yet.
@@ -44,7 +47,7 @@ PREF_DENY = re.compile(r"(last-update|last-build|last-version|migrat|milestone|\
 
 
 def die(msg):
-    print(f"zen-theme: {msg}", file=sys.stderr)
+    print(f"homu-zen-theme: {msg}", file=sys.stderr)
     sys.exit(1)
 
 
@@ -156,8 +159,15 @@ def install_tweaks(prof: Path) -> list:
     sm = prof / "chrome/sine-mods"
     mods_file = sm / "mods.json"
     mods = json.loads(mods_file.read_text()) if mods_file.exists() else {}
-    copy_tree(REPO / "tweaks", sm / TWEAKS_ID)
     notes = []
+    for old in OLD_TWEAKS_IDS:
+        if old in mods:
+            mods.setdefault(TWEAKS_ID, {"enabled": mods[old].get("enabled", True)})
+            del mods[old]
+            notes.append(f"removed old tweaks mod {old} (now {TWEAKS_ID})")
+        if (sm / old).is_dir():
+            shutil.rmtree(sm / old)
+    copy_tree(REPO / "tweaks", sm / TWEAKS_ID)
     entry = tweaks_entry()
     if TWEAKS_ID in mods:
         entry["enabled"] = mods[TWEAKS_ID].get("enabled", True)
@@ -216,6 +226,8 @@ def cmd_capture(args):
     if (prof / "user.js").exists():
         copy_any(prof / "user.js", REPO / "profile/user.js")
     (REPO / "mods").mkdir(exist_ok=True)
+    for old in OLD_TWEAKS_IDS:
+        mods.pop(old, None)
     for mid in mods:
         if mid == TWEAKS_ID:
             continue
@@ -237,7 +249,7 @@ def cmd_capture(args):
         if a != b:
             print(f"{mid}: {a} -> {b}" + ("" if mid in mods else " (removed)"))
     prefs = theme_prefs(prof, mods)
-    lines = ["// Theme and mod settings captured by `zen-theme capture`. `zen-theme apply` writes",
+    lines = ["// Theme and mod settings captured by `homu-zen-theme capture`. `homu-zen-theme apply` writes",
              "// these into prefs.js (not user.js, so changes made in Zen's settings still stick).", ""]
     lines += [f'user_pref("{k}", {v});' for k, v in prefs.items()]
     (REPO / "prefs").mkdir(exist_ok=True)
@@ -262,7 +274,7 @@ def http_get(url: str, tries=4) -> bytes:
     last = None
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "zen-theme"})
+            req = urllib.request.Request(url, headers={"User-Agent": "homu-zen-theme"})
             with urllib.request.urlopen(req, timeout=60) as r:
                 return r.read()
         except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
@@ -353,7 +365,7 @@ def cmd_update(args):
                 continue
             # Sine rewrites style/preferences/scripts paths when it installs a mod, so a plain
             # file copy is only equivalent when upstream kept the same layout. Otherwise let
-            # Sine do it: update the mod in Zen (Settings > Sine), then `zen-theme capture`.
+            # Sine do it: update the mod in Zen (Settings > Sine), then `homu-zen-theme capture`.
             if layout(vend) != layout(up):
                 report.append((mid, "layout changed: use Sine", note))
                 continue
@@ -394,7 +406,7 @@ def cmd_apply(args):
         print("note: Sine isn't installed in this profile; install it (github.com/CosmoCreeper/Sine) "
               "so the mods load. The CSS and prefs are applied anyway.")
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    backup = Path.home() / "hold" / f"zen-theme-backup-{stamp}"
+    backup = Path.home() / "hold" / f"homu-zen-theme-backup-{stamp}"
     backup.mkdir(parents=True)
     for name in CHROME_FILES + ["sine-mods"]:
         if (chrome / name).exists():
@@ -441,7 +453,7 @@ def apply_mods_only(prof: Path):
     live = json.loads((sm / "mods.json").read_text())
     repo = json.loads((REPO / "mods.json").read_text())
     stamp = time.strftime("%Y%m%d-%H%M%S")
-    backup = Path.home() / "hold" / f"zen-theme-backup-{stamp}" / "sine-mods"
+    backup = Path.home() / "hold" / f"homu-zen-theme-backup-{stamp}" / "sine-mods"
     changed = []
     for mid, m in repo.items():
         if mid == TWEAKS_ID:

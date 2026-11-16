@@ -5,7 +5,7 @@
   },
   {
     "type": "checkbox",
-    "property": "zen-theme.startup-wipe.disabled",
+    "property": "homu-zen-theme.startup-wipe.disabled",
     "label": "Disable startup background wipe (stops Neo Zen's Color Fixer from fading the window background in over 2 seconds at startup; the rest of the Color Fixer keeps working)",
     "defaultValue": false
   }

@@ -1,4 +1,4 @@
-// Theme and mod settings captured by `zen-theme capture`. `zen-theme apply` writes
+// Theme and mod settings captured by `homu-zen-theme capture`. `homu-zen-theme apply` writes
 // these into prefs.js (not user.js, so changes made in Zen's settings still stick).
 
 user_pref("arc-border-radius", "12px");
