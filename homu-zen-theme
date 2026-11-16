@@ -66,6 +66,21 @@ def default_profile():
     die("no Zen profile found; pass --profile")
 
 
+# Mods whose authors published no license live in the private homura-ai/homu-zen-theme-private
+# repo, checked out as the mods-private/ submodule, so the public repo doesn't republish them.
+PRIVATE_MODS = REPO / "mods-private"
+
+
+def has_license(d: Path) -> bool:
+    return any(re.match(r"(?i)(licen[cs]e|copying)", f.name) for f in d.iterdir())
+
+
+def mod_dir(mid: str) -> Path:
+    """Where the repo keeps a mod: mods-private/<id> if it is there, else mods/<id>."""
+    p = PRIVATE_MODS / mid
+    return p if p.is_dir() else REPO / "mods" / mid
+
+
 def copy_tree(src: Path, dst: Path):
     if dst.exists():
         shutil.rmtree(dst)
@@ -232,10 +247,21 @@ def cmd_capture(args):
         if mid == TWEAKS_ID:
             continue
         if (sm / mid).is_dir():
-            copy_tree(sm / mid, REPO / "mods" / mid)
+            dest = mod_dir(mid)
+            # A new mod with no license file goes to the private submodule, if it is checked out.
+            if not dest.exists() and not has_license(sm / mid):
+                if not (PRIVATE_MODS / ".git").exists():
+                    print(f"warning: {mid} has no license file and mods-private/ is not checked out "
+                          "(git submodule update --init); not captured")
+                    continue
+                dest = PRIVATE_MODS / mid
+                print(f"{mid}: no license file, kept in mods-private/ (commit it in that submodule)")
+            copy_tree(sm / mid, dest)
         else:
             print(f"warning: {mid} is in mods.json but has no folder")
-    for d in (REPO / "mods").iterdir():
+    for d in [*(REPO / "mods").iterdir(), *(PRIVATE_MODS.iterdir() if PRIVATE_MODS.is_dir() else [])]:
+        if not d.is_dir() or d.name.startswith("."):
+            continue
         if d.name not in mods or d.name == TWEAKS_ID:
             shutil.rmtree(d)
             print(f"removed {d.name} (no longer installed)")
@@ -333,7 +359,10 @@ def cmd_update(args):
         if mid not in wanted or mid == TWEAKS_ID:
             continue
         src = parse_source(m.get("homepage", ""))
-        vend = REPO / "mods" / mid
+        vend = mod_dir(mid)
+        if not vend.is_dir():
+            report.append((mid, "no copy here (git submodule update --init)", ""))
+            continue
         if not src:
             report.append((mid, "no GitHub source", m.get("homepage")))
             continue
@@ -425,7 +454,10 @@ def cmd_apply(args):
     sm.mkdir(parents=True, exist_ok=True)
     for mid in mods:
         if mid != TWEAKS_ID:
-            copy_tree(REPO / "mods" / mid, sm / mid)
+            if not mod_dir(mid).is_dir():
+                print(f"warning: no copy of {mid} here (run: git submodule update --init); Sine can reinstall it from its homepage")
+                continue
+            copy_tree(mod_dir(mid), sm / mid)
     (sm / "mods.json").write_text(json.dumps(mods, indent=2, ensure_ascii=False))
     install_tweaks(prof)
     # Sine rebuilds chrome.css/content.css (the @import list) on startup.
@@ -458,7 +490,10 @@ def apply_mods_only(prof: Path):
     for mid, m in repo.items():
         if mid == TWEAKS_ID:
             continue
-        src, dst = REPO / "mods" / mid, sm / mid
+        src, dst = mod_dir(mid), sm / mid
+        if not src.is_dir():
+            print(f"warning: no copy of {mid} here (run: git submodule update --init); left as is")
+            continue
         if dst.exists() and trees_equal(src, dst) and live.get(mid, {}).get("version") == m.get("version"):
             continue
         if dst.exists():
@@ -496,8 +531,10 @@ def cmd_status(args):
                 notes.append(f"enabled {repo[mid].get('enabled')} -> {live[mid].get('enabled')}")
             if live[mid].get("version") != repo[mid].get("version"):
                 notes.append(f"version {repo[mid].get('version')} -> {live[mid].get('version')}")
-            src = REPO / "tweaks" if mid == TWEAKS_ID else REPO / "mods" / mid
-            if not trees_equal(src, sm / mid):
+            src = REPO / "tweaks" if mid == TWEAKS_ID else mod_dir(mid)
+            if not src.is_dir():
+                notes.append("no copy in repo (submodule not checked out)")
+            elif not trees_equal(src, sm / mid):
                 notes.append("files differ")
             if notes:
                 print(f"~ {mid}: " + ", ".join(notes))
