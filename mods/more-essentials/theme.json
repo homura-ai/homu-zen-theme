@@ -1,0 +1,18 @@
+{
+  "id": "more-essentials",
+  "name": "More Essentials",
+  "description": "Set Zen's Essentials cap to infinite or a custom number.",
+  "homepage": "https://github.com/01-1/more-essentials",
+  "version": "1.0.1",
+  "createdAt": "2026-09-21",
+  "updatedAt": "2026-09-22T03:01:27Z",
+  "style": "chrome.css",
+  "fork": ["zen"],
+  "preferences": "preferences.json",
+  "scripts": {
+    "more-essentials.uc.js": {
+      "include": ["chrome://browser/content/browser.xhtml"]
+    }
+  },
+  "supportsUnload": true
+}
