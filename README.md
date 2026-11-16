@@ -25,7 +25,7 @@ cd ~/code/zen/zen-theme
 ./zen-theme capture                # profile -> repo (then commit)
 ./zen-theme update                 # check every mod against its upstream source
 ./zen-theme update --write [ids]   # pull newer upstream copies into mods/ (then commit)
-./zen-theme apply --mods-only      # repo mods -> running profile (loads at next Zen start)
+./zen-theme apply --mods-only      # repo mods -> profile; with --wait, waits for Zen to close first
 ./zen-theme apply                  # everything -> profile, including CSS and prefs; Zen must be closed
 ./zen-theme apply --wait           # same, but waits for Zen to close first
 ./zen-theme install-tweaks         # install/refresh Zen Theme Tweaks (safe while Zen runs)

@@ -337,13 +337,14 @@ def cmd_update(args):
 # ---------------------------------------------------------------- apply
 def cmd_apply(args):
     prof = args.profile
+    if args.wait:
+        print(f"waiting for Zen to close ({prof})", flush=True)
+        while zen_running(prof):
+            time.sleep(2)
     if args.mods_only:
         return apply_mods_only(prof)
     if zen_running(prof) and not args.force:
         die(f"Zen is running on {prof}; close it first (or wait with --wait)")
-    if args.wait:
-        while zen_running(prof):
-            time.sleep(5)
     chrome, sm = prof / "chrome", prof / "chrome/sine-mods"
     if not (chrome / "JS/sine.sys.mjs").exists():
         print("note: Sine isn't installed in this profile; install it (github.com/CosmoCreeper/Sine) "
