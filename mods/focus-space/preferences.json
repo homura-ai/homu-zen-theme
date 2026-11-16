@@ -57,6 +57,7 @@
     ]
   },
   {
+    "type": "checkbox",
     "property": "extensions.focus-space.pause-on-blur",
     "label": "Pause while the window is inactive, and resume when it's back",
     "defaultValue": true

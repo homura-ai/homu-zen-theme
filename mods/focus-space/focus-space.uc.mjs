@@ -115,7 +115,7 @@ const FALLBACK_PALETTE = [
 const INSTANCE_KEY = "__zenFocusSpaceInstance";
 // Logged at startup so the Browser Console shows which build is running.
 // Keep in step with theme.json's "version".
-const MOD_VERSION = "1.4.0";
+const MOD_VERSION = "1.4.1";
 
 // --- session stopwatch state -------------------------------------------------
 let timerInterval = null;
@@ -128,6 +128,7 @@ let autoPaused = false;
 let pauseOnBlur = true;
 let activeTimerEl = null;
 let activeToggleBtn = null;
+let timerResizeObserver = null;
 let showSeparator = true;
 let stopwatchMode = DEFAULT_STOPWATCH_MODE;
 let timerPlacement = DEFAULT_PLACEMENT;
@@ -752,8 +753,8 @@ function renderTime() {
 // (so the space name is laid out exactly as it would be without a timer) and
 // pinned just ahead of the trailing action buttons. Those have no fixed width
 // — and are only revealed on hover — so the offset is measured and handed to
-// the stylesheet as a variable. Cheap enough to run on each tick; it also
-// self-heals when the first call lands before the indicator has a layout.
+// the stylesheet as a variable. A resize observer also updates it while paused
+// when the sidebar changes width or the trailing buttons appear on hover.
 function positionEndTimer() {
   if (timerPlacement !== "end" || !activeTimerEl) {
     return;
@@ -779,6 +780,22 @@ function positionEndTimer() {
   const value = `${right}px`;
   if (indicator.style.getPropertyValue("--zen-fs-timer-right") !== value) {
     indicator.style.setProperty("--zen-fs-timer-right", value);
+  }
+}
+
+// Button visibility changes their width in Zen, even with the timer paused.
+// Observe only the active row and release old targets on switches or teardown.
+function watchTimerLayout() {
+  timerResizeObserver?.disconnect();
+  timerResizeObserver = null;
+  const indicator = activeTimerEl?.parentNode;
+  if (!indicator) {
+    return;
+  }
+  timerResizeObserver = new ResizeObserver(positionEndTimer);
+  timerResizeObserver.observe(indicator);
+  if (activeToggleBtn) {
+    timerResizeObserver.observe(activeToggleBtn);
   }
 }
 
@@ -2133,6 +2150,7 @@ function activate(workspace) {
   autoPaused = false;
   activeTimerEl = timerEl;
   activeToggleBtn = indicator ? ensureButton(indicator) : null;
+  watchTimerLayout();
 
   renderTime();
   updateButtonVisual();
@@ -2160,6 +2178,8 @@ const onWorkspaceChange = (data) => activate(data.workspace);
 // longer be reached (see INSTANCE_KEY) — a fresh run must own fresh nodes,
 // since the toggle's click handler is bound to the run that created it.
 function removeOwnElements() {
+  timerResizeObserver?.disconnect();
+  timerResizeObserver = null;
   const nodes = document.querySelectorAll(
     `.${TIMER_LABEL_CLASS}, .${TIMER_BUTTON_CLASS}, ` +
       `#${RATIO_CONTAINER_ID}, #${SESSIONS_PANEL_ID}`,

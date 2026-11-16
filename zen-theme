@@ -271,6 +271,19 @@ def version_of(d: Path):
         return None
 
 
+def theme_json(d: Path) -> dict:
+    try:
+        return json.loads((d / "theme.json").read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def layout(d: Path):
+    """The theme.json fields Sine uses to decide which files to load."""
+    t = theme_json(d)
+    return {k: t.get(k) for k in ("style", "preferences", "scripts", "modules")}
+
+
 def changed_files(a: Path, b: Path):
     def files(root):
         return {str(p.relative_to(root)) for p in root.rglob("*")
@@ -315,18 +328,23 @@ def cmd_update(args):
                                f"{len(gone)} vendored files not upstream, e.g. {gone[:3]}"))
                 continue
             note = f"{version_of(vend)} -> {version_of(up)}; {len(diff)} changed, {len(added)} new, {len(gone)} removed"
-            if args.write:
-                copy_tree(up, vend)
-                if args.bump_meta:
-                    fresh = json.loads((vend / "theme.json").read_text()) if (vend / "theme.json").exists() else {}
-                    for key in ("version", "updatedAt", "name", "description", "style", "preferences",
-                                "scripts", "modules", "readme", "image", "tags"):
-                        if key in fresh:
-                            m[key] = fresh[key]
-                changed = True
-                report.append((mid, "UPDATED", note))
-            else:
+            if not args.write:
                 report.append((mid, "update available", note))
+                continue
+            # Sine rewrites style/preferences/scripts paths when it installs a mod, so a plain
+            # file copy is only equivalent when upstream kept the same layout. Otherwise let
+            # Sine do it: update the mod in Zen (Settings > Sine), then `zen-theme capture`.
+            if layout(vend) != layout(up):
+                report.append((mid, "layout changed: use Sine", note))
+                continue
+            copy_tree(up, vend)
+            fresh = theme_json(vend)
+            for key in ("version", "name", "description"):
+                if key in fresh:
+                    m[key] = fresh[key]
+            m["updatedAt"] = fresh.get("updatedAt") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            changed = True
+            report.append((mid, "UPDATED", note))
     if changed:
         (REPO / "mods.json").write_text(json.dumps(mods, indent=2, ensure_ascii=False) + "\n")
     w = max(len(r[0]) for r in report) if report else 0
@@ -463,9 +481,8 @@ def main():
     sub.add_parser("capture", help="copy the theme from the profile into this repo")
     u = sub.add_parser("update", help="check mods against their upstream sources")
     u.add_argument("mods", nargs="*", help="mod ids (default: all)")
-    u.add_argument("--write", action="store_true", help="pull newer upstream copies into mods/")
-    u.add_argument("--no-meta", dest="bump_meta", action="store_false",
-                   help="with --write, leave mods.json metadata alone")
+    u.add_argument("--write", action="store_true",
+                   help="pull newer upstream copies into mods/ when their layout is unchanged")
     a = sub.add_parser("apply", help="install this repo's theme into the profile (Zen closed)")
     a.add_argument("--wait", action="store_true", help="wait for Zen to close, then apply")
     a.add_argument("--force", action="store_true", help=argparse.SUPPRESS)

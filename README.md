@@ -24,7 +24,8 @@ cd ~/code/zen/zen-theme
 ./zen-theme status                 # how the profile differs from the repo
 ./zen-theme capture                # profile -> repo (then commit)
 ./zen-theme update                 # check every mod against its upstream source
-./zen-theme update --write [ids]   # pull newer upstream copies into mods/ (then commit)
+./zen-theme update --write [ids]   # pull newer upstream copies into mods/ (then commit); mods whose
+                                   # layout changed are left for Sine: update them in Zen, then capture
 ./zen-theme apply --mods-only      # repo mods -> profile; with --wait, waits for Zen to close first
 ./zen-theme apply                  # everything -> profile, including CSS and prefs; Zen must be closed
 ./zen-theme apply --wait           # same, but waits for Zen to close first
