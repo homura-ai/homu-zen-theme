@@ -1,5 +1,7 @@
 # homu-zen-theme
 
+The current theme setup lives in [Homuzen's `theme/` directory](https://github.com/homura-ai/homuzen/tree/main/theme). The commands below describe the standalone theme snapshot in this repository.
+
 Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next laptop) can get the same look and stay in sync.
 
 ## What's here
@@ -16,7 +18,7 @@ Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next la
 | `homu-zen-theme` | The tool (Python 3, no dependencies). |
 | `docs/root-brief.md` | Shared brief for agents updating the other Zen repos. |
 
-Homura's own mods are homura-ai/homuzen (Tab State Highlighter, More Essentials, Modify URL Bar Icons, Sine Mod Search and middle-click unload, each opt-in; it includes this repo as a submodule) and homura-ai/Zen-Focus-Space. The four standalone repos homuzen replaced (tab-state-highlighter, more-essentials, modify-url-bar-icons, sine-mod-search) stay installed here until the profile switches to homuzen and is captured again. Neo Zen is installed from the homura-ai/Neo-Zen fork, which carries a settings fix that upstream lacks.
+Homura's own mods are homura-ai/homuzen (Tab State Highlighter, More Essentials, Modify URL Bar Icons, Sine Mod Search and middle-click unload, each opt-in; it includes this theme setup in its `theme/` directory) and homura-ai/Zen-Focus-Space. The four standalone repos homuzen replaced (tab-state-highlighter, more-essentials, modify-url-bar-icons, sine-mod-search) stay installed here until the profile switches to homuzen and is captured again. Neo Zen is installed from the homura-ai/Neo-Zen fork, which carries a settings fix that upstream lacks.
 
 ## Use
 
@@ -33,9 +35,9 @@ cd ~/code/zen/homu-zen-theme
 ./homu-zen-theme install-tweaks         # install/refresh Homu Zen Theme Tweaks (safe while Zen runs)
 ```
 
-`capture` makes the repo match the profile, so apply the repo's updates first (`apply --mods-only`) or capture will revert them; it lists every mod version it changes. `apply` backs up what it replaces to `~/hold/homu-zen-theme-backup-<time>/`. `--profile <dir>` picks another profile; the default is the one Zen starts with.
+`capture` makes the repo match the profile, so apply the repo's updates first (`apply --mods-only`) or capture will revert them; it lists every mod version it changes. `apply` backs up what it replaces to `~/hold/homu-zen-theme-backup-<time>/`. `--profile <dir>` before the subcommand picks another profile (for example, `./homu-zen-theme --profile /path/to/profile status`); the default is the one Zen starts with.
 
-**New machine:** install Zen, install Sine (github.com/CosmoCreeper/Sine), start Zen once and close it, then clone this repo with `git clone --recurse-submodules` and run `./homu-zen-theme apply`.
+**New machine:** install Zen, install Sine (github.com/CosmoCreeper/Sine), start Zen once and close it, then clone this repo with `git clone https://github.com/homura-ai/homu-zen-theme.git`. From the clone, run `git submodule update --init` if you have access to the private mods, then run `./homu-zen-theme apply`. Without private-repository access, skip the submodule step; missing mods can be installed through Sine from their homepages in `mods.json`.
 
 **Undo an update:** `git revert <commit>` then `./homu-zen-theme apply --mods-only` (or `apply` with Zen closed).
 
