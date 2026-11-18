@@ -1,5 +1,5 @@
 #!/usr/bin/env -S python3 -I
-"""homu-zen-theme: Homura's Zen Browser theme as code.
+"""homu-zen-theme: Manage a Zen Browser theme as code.
 
   capture   copy the theme from a Zen profile into this repo
   update    check every mod's upstream source; with --write, pull newer copies into this repo
@@ -526,7 +526,7 @@ def apply_mods_only(prof: Path):
         if dst.exists():
             copy_tree(dst, backup / mid)
         copy_tree(src, dst)
-        # Keep the live enabled flag: Homura may have toggled a mod since the last capture.
+        # Keep the live enabled flag, which may have changed since the last capture.
         live[mid] = {**m, "enabled": live.get(mid, m).get("enabled", m.get("enabled"))}
         changed.append(mid)
     if changed:

@@ -1,6 +1,6 @@
 # homu-zen-theme
 
-Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next laptop) can get the same look and stay in sync.
+Keep a Zen Browser theme in sync across machines.
 
 ## What's here
 
@@ -14,9 +14,8 @@ Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next la
 | `profile/chrome/` | LEPTON's `userChrome.css` / `userContent.css` and assets. |
 | `profile/user.js` | LEPTON's user.js (theme switches plus privacy defaults). |
 | `homu-zen-theme` | The tool (Python 3, no dependencies). |
-| `docs/root-brief.md` | Shared brief for agents updating the other Zen repos. |
 
-Homura's own mods are homura-ai/homuzen (Tab State Highlighter, More Essentials, Modify URL Bar Icons, Sine Mod Search and middle-click unload, each opt-in; it includes this repo as a submodule) and homura-ai/Zen-Focus-Space. The four standalone repos homuzen replaced (tab-state-highlighter, more-essentials, modify-url-bar-icons, sine-mod-search) stay installed here until the profile switches to homuzen and is captured again. Neo Zen is installed from the homura-ai/Neo-Zen fork, which carries a settings fix that upstream lacks.
+This setup uses the maintainer's mods from homura-ai/homuzen (Tab State Highlighter, More Essentials, Modify URL Bar Icons, Sine Mod Search and middle-click unload, each opt-in; it includes this repo as a submodule) and homura-ai/Zen-Focus-Space. The four standalone repos homuzen replaced (tab-state-highlighter, more-essentials, modify-url-bar-icons, sine-mod-search) stay installed here until the profile switches to homuzen and is captured again. Neo Zen is installed from the homura-ai/Neo-Zen fork, which carries a settings fix that upstream lacks.
 
 ## Use
 
@@ -47,4 +46,4 @@ Settings → Sine → Homu Zen Theme Tweaks.
 
 ## License
 
-Homura's own files here are all rights reserved; see [LICENSE](LICENSE) for how to ask for an exception. Each mod under `mods/` and the LEPTON files in `profile/chrome/` belong to their authors and keep their own licenses (MIT, Apache-2.0, GPL-3.0 or MPL-2.0; see the LICENSE file in each folder).
+The theme's original files are all rights reserved. See [LICENSE](LICENSE) for how to ask for an exception. Each mod under `mods/` and the LEPTON files in `profile/chrome/` belong to their authors and keep their own licenses (MIT, Apache-2.0, GPL-3.0 or MPL-2.0; see the LICENSE file in each folder).
