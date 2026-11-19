@@ -1,9 +1,0 @@
-@media -moz-pref("neo.footer.position", "top") {
-    #zen-sidebar-foot-buttons {
-        order: -1;
-    }
-
-    #TabsToolbar {
-        margin-top: 8px !important;
-    }
-}
