@@ -15,8 +15,6 @@ Homura's Zen Browser theme, kept as code so any machine (pbox, omen, the next la
 | `profile/user.js` | LEPTON's user.js (theme switches plus privacy defaults). |
 | `homu-zen-theme` | The tool (Python 3, no dependencies). |
 
-Homura's own mods are homura-ai/homuzen (Tab State Highlighter, More Essentials, Modify URL Bar Icons, Sine Mod Search and middle-click unload, each opt-in; it includes this repo as a submodule) and homura-ai/Zen-Focus-Space. The four standalone repos homuzen replaced (tab-state-highlighter, more-essentials, modify-url-bar-icons, sine-mod-search) stay installed here until the profile switches to homuzen and is captured again. Neo Zen is installed from the homura-ai/Neo-Zen fork, which carries a settings fix that upstream lacks.
-
 ## Use
 
 ```bash
